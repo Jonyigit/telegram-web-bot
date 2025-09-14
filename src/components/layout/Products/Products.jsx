@@ -34,6 +34,16 @@ function Products({ activeCategory, onCheckout }) {
         }
     }, [categories]);
 
+    useEffect(() => {
+        const telegram = window.Telegram.WebApp;
+        if (totalSum > 0) {
+            telegram.MainButton.text = "Sotib olish";
+            telegram.MainButton.show();
+        } else {
+            telegram.MainButton.hide();
+        }
+    }, [totalSum]);
+
     return (
         <section className={styles["products-section"]}>
             <div className={styles["products-container"]}>
