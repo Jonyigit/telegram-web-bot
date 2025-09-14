@@ -1,7 +1,7 @@
-import api from "./index";
+import axios from "axios";
 
-export const getProducts = async (restaurantId) => {
-    const { data } = await api.get(`/user/restaurant/product?id=${restaurantId}`, {
+export const getProducts = async () => {
+    const { data } = await axios.get(`https://telegram-web-bot-two.vercel.app/api/products`, {
         headers: {
             "Accept-Language": "uz",
         },
