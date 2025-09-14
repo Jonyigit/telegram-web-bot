@@ -1,18 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "../../../api/products";
+import { useState, useMemo, useEffect } from "react";
 import ProductsCard from "../../ui/ProductsCard/ProductsCard";
 import ProductsCardSkeleton from "../../ui/ProductsCardSkeleton/ProductsCardSkeleton";
 import styles from "./Products.module.scss";
+import { productsDb } from "../../../api/productsDb";
 
 function Products({ activeCategory, onCheckout }) {
-    const { data, isLoading } = useQuery({
-        queryKey: ["products", 104],
-        queryFn: () => getProducts(104),
-    });
-
-    const categories = data?.data?.products || [];
+    const [isLoading, setIsLoading] = useState(true);
+    const categories = productsDb()?.data?.products || [];
 
     const filteredCategories = activeCategory
         ? categories.filter((category) => category.id === activeCategory)
@@ -32,6 +27,12 @@ function Products({ activeCategory, onCheckout }) {
             return acc + item.count * item.price;
         }, 0);
     }, [cart]);
+
+    useEffect(() => {
+        if (categories.length > 0) {
+            setIsLoading(false);
+        }
+    }, [categories]);
 
     return (
         <section className={styles["products-section"]}>
@@ -56,7 +57,7 @@ function Products({ activeCategory, onCheckout }) {
                 ))}
 
                 <AnimatePresence>
-                    {totalSum > 0 && (
+                    {!isLoading && totalSum > 0 && (
                         <motion.div
                             key="totalBox"
                             className={styles.totalBox}

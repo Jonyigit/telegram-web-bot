@@ -1,23 +1,21 @@
 import styles from "./Category.module.scss";
-import { useQuery } from "@tanstack/react-query";
-import { fetchCategories } from "../../../api/category";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import CategorySkeleton from "../../ui/CategorySkeleton/CategorySkeleton";
+import { categoryDb } from "../../../api/categoryDb";
 
 function Category({ activeCategory, setActiveCategory }) {
-    const { data, isLoading } = useQuery({
-        queryKey: ["categories", 104],
-        queryFn: () => fetchCategories(104),
-    });
-
-    const categories = data?.data || [];
+    const [isLoading, setIsLoading] = useState(true);
+    const categories = categoryDb()?.data || [];
 
     useEffect(() => {
-        if (categories.length > 0 && !activeCategory) {
-            setActiveCategory(categories[0].id);
+        if (categories.length > 0) {
+            setIsLoading(false);
+            if (!activeCategory) {
+                setActiveCategory(categories[0].id);
+            }
         }
     }, [categories, activeCategory, setActiveCategory]);
 
