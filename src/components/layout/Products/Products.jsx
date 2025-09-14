@@ -36,10 +36,7 @@ function Products({ activeCategory, onCheckout }) {
 
     useEffect(() => {
         const telegram = window.Telegram.WebApp;
-        if (totalSum > 0) {
-            telegram.MainButton.text = "Sotib olish";
-            telegram.MainButton.show();
-        } else {
+        if (totalSum <= 0) {
             telegram.MainButton.hide();
         }
     }, [totalSum]);
