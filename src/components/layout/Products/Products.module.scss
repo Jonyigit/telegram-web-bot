@@ -1,0 +1,102 @@
+.products-section {
+    padding: 0px 24px;
+    .products-container {
+        max-width: 1110px;
+        margin: 0 auto;
+
+        .title {
+            margin-bottom: 16px;
+            h1 {
+                font-size: 24px;
+                font-weight: 700;
+                color: var(--text-primary);
+            }
+        }
+
+        .loading-title {
+            margin-bottom: 20px;
+            width: 200px;
+            height: 28px;
+            border-radius: 6px;
+            background: #e5e5e5;
+            position: relative;
+            overflow: hidden;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -150px;
+                width: 100px;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+                animation: shimmer 1.5s infinite;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -150px;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(164px, 1fr));
+            gap: 16px;
+            margin-bottom: 64px;
+        }
+        .totalBox {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .btn {
+                padding: 10px 0px;
+                font-size: 12px;
+                background: var(--tg-yellow);
+                max-width: 200px;
+                width: 100%;
+                font-family: inherit;
+                border: none;
+                outline: none;
+                border-radius: 8px;
+                color: var(--card);
+                font-weight: 700;
+                border: 1px solid var(--border);
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+@media (max-width: 712px) {
+    .products-section {
+        .products-container {
+            .totalBox {
+                font-size: 12px;
+                text-align: center;
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    }
+}
+
+@media (max-width: 520px) {
+    .products-section {
+        .products-container {
+            .totalBox {
+                font-size: 12px;
+                text-align: center;
+            }
+        }
+    }
+}
