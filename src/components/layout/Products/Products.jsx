@@ -28,28 +28,6 @@ function Products({ activeCategory, onCheckout }) {
         }, 0);
     }, [cart]);
 
-    const onCheckout = () => {
-        const telegram = window.Telegram.WebApp;
-
-        const products = Object.entries(cart).map(([id, item]) => {
-            const product = categories.flatMap((c) => c.products).find((p) => p.id === id);
-            return {
-                id,
-                title: product?.title,
-                price: item.price,
-                count: item.count,
-                image: product?.image,
-            };
-        });
-
-        const payload = {
-            totalSum,
-            products,
-        };
-
-        telegram.sendData(JSON.stringify(payload));
-    };
-
     useEffect(() => {
         if (categories.length > 0) {
             setIsLoading(false);
