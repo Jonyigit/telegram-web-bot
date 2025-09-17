@@ -10,15 +10,11 @@ function Products({ activeCategory, onCheckout }) {
     const [isLoading, setIsLoading] = useState(true);
     const categories = productsDb()?.data?.products || [];
 
-    const telegram = window.Telegram.WebApp;
-
     const filteredCategories = activeCategory
         ? categories.filter((category) => category.id === activeCategory)
         : categories;
 
     const [cart, setCart] = useState({});
-
-    console.log(cart);
 
     const handleCountChange = (productId, count, price) => {
         setCart((prev) => ({
@@ -33,22 +29,18 @@ function Products({ activeCategory, onCheckout }) {
         }, 0);
     }, [cart]);
 
-    const onSendData = useCallback(() => {
-        telegram.sendData(JSON.stringify(cart));
-    }, [cart]);
-
-    useEffect(() => {
-        const tg = window.Telegram.WebApp;
-        tg.onEvent("mainButtonClicked", onSendData);
-
-        return () => tg.offEvent("mainButtonClicked", onSendData);
-    }, [onSendData]);
-
     useEffect(() => {
         if (categories.length > 0) {
             setIsLoading(false);
         }
     }, [categories]);
+
+    useEffect(() => {
+        const telegram = window.Telegram.WebApp;
+        if (totalSum <= 0) {
+            telegram.MainButton.hide();
+        }
+    }, [totalSum]);
 
     return (
         <section className={styles["products-section"]}>
