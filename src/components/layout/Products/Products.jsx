@@ -38,8 +38,10 @@ function Products({ activeCategory, onCheckout }) {
     }, [cart]);
 
     useEffect(() => {
-        telegram.onEvent("mainButtonClicked", onSendData);
-        return () => telegram.offEvent("mainButtonClicked", onSendData);
+        const tg = window.Telegram.WebApp;
+        tg.onEvent("mainButtonClicked", onSendData);
+
+        return () => tg.offEvent("mainButtonClicked", onSendData);
     }, [onSendData]);
 
     useEffect(() => {
@@ -47,13 +49,6 @@ function Products({ activeCategory, onCheckout }) {
             setIsLoading(false);
         }
     }, [categories]);
-
-    useEffect(() => {
-        const telegram = window.Telegram.WebApp;
-        if (totalSum <= 0) {
-            telegram.MainButton.hide();
-        }
-    }, [totalSum]);
 
     return (
         <section className={styles["products-section"]}>
