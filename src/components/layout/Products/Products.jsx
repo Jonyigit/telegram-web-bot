@@ -4,16 +4,21 @@ import ProductsCard from "../../ui/ProductsCard/ProductsCard";
 import ProductsCardSkeleton from "../../ui/ProductsCardSkeleton/ProductsCardSkeleton";
 import styles from "./Products.module.scss";
 import { productsDb } from "../../../api/productsDb";
+import { useCallback } from "react";
 
 function Products({ activeCategory, onCheckout }) {
     const [isLoading, setIsLoading] = useState(true);
     const categories = productsDb()?.data?.products || [];
+
+    const telegram = window.Telegram.WebApp;
 
     const filteredCategories = activeCategory
         ? categories.filter((category) => category.id === activeCategory)
         : categories;
 
     const [cart, setCart] = useState({});
+
+    console.log(cart);
 
     const handleCountChange = (productId, count, price) => {
         setCart((prev) => ({
@@ -27,6 +32,15 @@ function Products({ activeCategory, onCheckout }) {
             return acc + item.count * item.price;
         }, 0);
     }, [cart]);
+
+    const onSendData = useCallback(() => {
+        telegram.sendData(JSON.stringify(cart));
+    }, [cart]);
+
+    useEffect(() => {
+        telegram.onEvent("mainButtonClicked", onSendData);
+        return () => telegram.offEvent("mainButtonClicked", onSendData);
+    }, [onSendData]);
 
     useEffect(() => {
         if (categories.length > 0) {
